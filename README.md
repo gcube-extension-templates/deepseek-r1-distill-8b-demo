@@ -75,7 +75,15 @@ cd deepseek-r1-distill-8b-demo
 pip install -r requirements.txt
 ```
 
-### 3. 모델 실행
+### 3. Setup 실행 (패키지 설치 + 모델 다운로드 한번에)
+
+```bash
+bash setup.sh
+```
+
+> ✅ MIT 라이선스 모델로 Hugging Face 로그인 없이 바로 다운로드됩니다.
+
+### 4. 모델 실행
 
 ```bash
 python run.py
@@ -165,4 +173,4 @@ A. `run.py`의 `USE_4BIT = True`로 설정하면 VRAM 사용량을 약 절반으
 ## 📜 라이선스
 
 이 프로젝트의 코드는 MIT License를 따릅니다.  
-모델 가중치도 [MIT License](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B)를 따르며 상업적 이용이 가능합니다.
+모델 가중치도 [MIT License](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B)를 따릅니다.
