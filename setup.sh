@@ -4,39 +4,46 @@
 #  실행: bash setup.sh
 # ==============================================
 
-set -e  # 오류 발생 시 즉시 중단
+set -e
 
 echo "======================================"
 echo "  🧠 DeepSeek-R1-Distill-Llama-8B Setup"
 echo "======================================"
 
 # ----------------------------------------------
-# 1. 패키지 설치
+# 1. Ollama 설치
 # ----------------------------------------------
 echo ""
-echo "[1/2] 패키지 설치 중..."
-pip install -r requirements.txt --quiet
-echo "✅ 패키지 설치 완료"
+echo "[1/3] Ollama 설치 중..."
+curl -fsSL https://ollama.ai/install.sh | sh
+echo "✅ Ollama 설치 완료"
 
 # ----------------------------------------------
-# 2. 모델 다운로드
-# (MIT 라이선스 — HF 로그인 불필요)
+# 2. Open WebUI 설치
 # ----------------------------------------------
 echo ""
-echo "[2/2] 모델 다운로드 중... (약 16GB, 시간이 소요됩니다)"
+echo "[2/3] Open WebUI 설치 중..."
+pip install open-webui --quiet
+echo "✅ Open WebUI 설치 완료"
 
-MODEL_DIR="/workspace/models/deepseek-r1-distill-llama-8b"
-mkdir -p "$MODEL_DIR"
+# ----------------------------------------------
+# 3. 모델 다운로드
+# (MIT 라이선스 — 토큰 불필요)
+# ----------------------------------------------
+echo ""
+echo "[3/3] 모델 다운로드 중... (시간이 소요됩니다)"
 
-if ! huggingface-cli download deepseek-ai/DeepSeek-R1-Distill-Llama-8B \
-    --local-dir "$MODEL_DIR"; then
-    echo ""
-    echo "❌ 모델 다운로드에 실패했습니다."
-    echo "   네트워크 연결을 확인하고 다시 실행해주세요."
-    exit 1
-fi
+# Ollama 서비스 백그라운드 시작
+ollama serve &
+OLLAMA_PID=$!
+sleep 5
 
-echo "✅ 모델 다운로드 완료: $MODEL_DIR"
+ollama pull deepseek-r1:8b
+
+echo "✅ 모델 다운로드 완료"
+
+# Ollama 종료 (start.sh에서 다시 시작)
+kill $OLLAMA_PID 2>/dev/null || true
 
 # ----------------------------------------------
 # 완료
@@ -44,7 +51,7 @@ echo "✅ 모델 다운로드 완료: $MODEL_DIR"
 echo ""
 echo "======================================"
 echo "  ✅ Setup 완료!"
-echo "  이제 아래 명령어로 실행하세요:"
+echo "  이제 아래 명령어로 서비스를 시작하세요:"
 echo ""
-echo "  python run.py"
+echo "  bash start.sh"
 echo "======================================"
