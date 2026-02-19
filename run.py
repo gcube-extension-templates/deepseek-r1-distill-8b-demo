@@ -29,8 +29,10 @@ MAX_NEW_TOKENS = 2048
 # Temperature (DeepSeek 공식 권고: 0.5 ~ 0.7)
 TEMPERATURE = 0.6
 
-# 4-bit 양자화 사용 여부 (VRAM 8GB 환경에서 True로 설정)
-USE_4BIT = False
+# 4-bit 양자화 사용 여부
+# RTX 40 시리즈 전 라인업(최소 RTX 4060 8GB) 호환을 위해 기본값 True
+# VRAM 16GB 이상 환경에서 False로 변경 시 더 높은 품질로 실행 가능
+USE_4BIT = True
 
 # =============================================
 

@@ -56,6 +56,9 @@ Reasoning 모델은 답변 전에 **`<think>` 태그 내부에서 단계별 추�
 | 저장공간 | 20GB (모델 다운로드 포함) | 30GB 이상 |
 | Python | 3.10 이상 | 3.11 |
 
+> ✅ 기본값 4-bit 양자화로 RTX 40 시리즈 전 라인업(RTX 4060 8GB~)에서 실행 가능합니다.  
+> VRAM 16GB 이상 환경에서는 `run.py`의 `USE_4BIT = False`로 변경 시 더 높은 품질로 실행할 수 있습니다.
+
 > ✅ MIT 라이선스로 **Hugging Face 계정 없이** 모델 다운로드가 가능합니다.
 
 ---
@@ -174,4 +177,4 @@ A. `run.py`의 `USE_4BIT = True`로 설정하면 VRAM 사용량을 약 절반으
 ## 📜 라이선스
 
 이 프로젝트의 코드는 MIT License를 따릅니다.  
-모델 가중치도 [MIT License](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B)를 따르며 상업적 이용이 가능합니다.
+모델 가중치도 [MIT License](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B)를 따릅릅니다.
