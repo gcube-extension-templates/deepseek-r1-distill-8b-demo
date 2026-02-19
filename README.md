@@ -129,6 +129,7 @@ F(6)=8, F(7)=13, F(8)=21, F(9)=34, F(10)=55
 deepseek-r1-distill-8b-demo/
 ├── README.md          # 프로젝트 설명 (현재 파일)
 ├── requirements.txt   # 필요한 Python 패키지 목록
+├── setup.sh           # 패키지 설치 + 모델 다운로드 자동화 스크립트
 └── run.py             # 모델 실행 스크립트 (think 파싱 포함)
 ```
 
@@ -173,4 +174,4 @@ A. `run.py`의 `USE_4BIT = True`로 설정하면 VRAM 사용량을 약 절반으
 ## 📜 라이선스
 
 이 프로젝트의 코드는 MIT License를 따릅니다.  
-모델 가중치도 [MIT License](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B)를 따릅니다.
+모델 가중치도 [MIT License](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B)를 따르며 상업적 이용이 가능합니다.
