@@ -1,15 +1,28 @@
 # 🧠 DeepSeek-R1-Distill-Llama-8B Demo
 
-> 💡 **추론 과정이 궁금한 개발자에게 추천하는 프로젝트입니다.**  
+> 💡 **추론 특화 모델의 사고 과정을 직접 확인해보고 싶은 분께 추천하는 프로젝트입니다.**  
 > DeepSeek R1의 단계적 사고(`<think>`) 과정을 **Open WebUI** 기반 ChatGPT 같은 웹 인터페이스로 직접 확인해볼 수 있습니다.
 
 ---
 
 ## 📌 모델 소개
 
-**DeepSeek-R1-Distill-Llama-8B**는 DeepSeek AI가 공개한 추론 특화 오픈소스 모델입니다.  
-Llama 3.1 8B 아키텍처를 기반으로 강화학습(GRPO)으로 추론 능력을 강화한 증류(Distill) 모델로,  
-답변 전 **`<think>` 태그로 단계적 추론 과정을 보여주는 것**이 특징입니다.
+**DeepSeek-R1-Distill-Llama-8B**는 중국 AI 스타트업 DeepSeek가 2025년 1월 공개한 추론 특화 오픈소스 모델입니다.
+
+### 역사와 배경
+2025년 초 DeepSeek는 OpenAI의 o1과 유사한 추론 능력을 가진 R1 모델을 공개했습니다. 놀라운 점은 OpenAI 대비 훨씬 적은 비용으로 개발되었다는 것으로, 공개 당시 AI 업계에 큰 충격을 주었습니다. 특히 R1-Distill 시리즈는 대형 모델의 추론 능력을 소형 모델에 증류(Distill)한 것으로, 8B라는 작은 크기에도 불구하고 수학·논리 문제에서 뛰어난 성능을 보입니다.
+
+### 장단점
+
+| 장점 | 단점 |
+|------|------|
+| 수학, 논리, 코딩 문제에서 뛰어난 성능 | 일반 대화에서 범용 모델보다 느릴 수 있음 |
+| `<think>` 태그로 추론 과정 투명하게 공개 | `<think>` 과정이 길어 응답 시간이 상대적으로 김 |
+| MIT 라이선스로 상업적 이용 가능 | 한국어 성능이 영어 대비 다소 낮음 |
+| Llama 3.1 아키텍처 기반으로 생태계 호환 | |
+
+### 동작 원리
+Llama 3.1 8B 아키텍처를 베이스로, DeepSeek R1 대형 모델의 추론 능력을 증류(Knowledge Distillation)한 모델입니다. GRPO(Group Relative Policy Optimization) 강화학습으로 단계적 사고 능력을 훈련했으며, 최종 답변 전 `<think>` 태그 안에서 문제를 분해하고 검증하는 과정을 거칩니다. Open WebUI에서는 이 추론 과정을 접을 수 있는 형태로 확인할 수 있습니다.
 
 | 항목 | 내용 |
 |------|------|
@@ -40,6 +53,12 @@ Llama 3.1 8B 아키텍처를 기반으로 강화학습(GRPO)으로 추론 능력
 
 ### 1. 저장소 클론
 
+> ⚠️ 워크로드 배포 직후에는 git/curl이 아직 설치 중일 수 있습니다.  
+> `git: command not found` 오류가 발생하면 잠시 후 다시 시도하거나 아래 명령어로 수동 설치하세요.
+> ```bash
+> apt-get update && apt-get install -y git curl
+> ```
+
 ```bash
 git clone https://github.com/gcube-extension-templates/deepseek-r1-distill-8b-demo.git
 cd deepseek-r1-distill-8b-demo
@@ -58,6 +77,8 @@ bash setup.sh
 ```bash
 bash start.sh
 ```
+
+> 터미널에 **"Open WebUI 준비 완료!"** 메시지가 출력된 후 브라우저에서 접속하세요.
 
 ### 4. 브라우저에서 접속
 
@@ -82,10 +103,10 @@ deepseek-r1-distill-8b-demo/
 A. setup.sh 실행 중 Ollama, Open WebUI 설치 및 모델 다운로드가 진행됩니다. 인터넷 속도에 따라 수~수십 분이 소요될 수 있으며, 다음 실행부터는 `bash start.sh`만 실행하면 됩니다.
 
 **Q. `<think>` 태그가 뭔가요?**  
-A. DeepSeek R1 모델이 최종 답변 전 단계적으로 추론하는 과정을 표시하는 태그입니다. Open WebUI에서는 접을 수 있는 형태로 보여줍니다.
+A. DeepSeek R1 모델이 최종 답변 전 단계적으로 추론하는 과정을 표시하는 태그입니다. Open WebUI에서는 접을 수 있는 형태로 보여줍니다. 수학이나 논리 문제를 입력하면 추론 과정을 확인할 수 있습니다.
 
 **Q. 브라우저에서 접속이 안 돼요.**  
-A. GCUBE 워크로드 설정에서 포트 8080이 열려 있는지 확인해주세요.
+A. `bash start.sh` 실행 후 터미널에 "Open WebUI 준비 완료!" 메시지가 출력됐는지 확인해주세요. GCUBE 워크로드 설정에서 포트 8080이 열려 있는지도 확인하세요.
 
 ---
 
