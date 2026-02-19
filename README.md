@@ -1,47 +1,22 @@
-# 🧠 DeepSeek-R1-Distill-Llama-8B — Reasoning Model Demo
+# 🧠 DeepSeek-R1-Distill-Llama-8B Demo
 
-> 💡 **AI 모델에 어느 정도 익숙한 개발자에게 추천하는 프로젝트입니다.**  
-> 단순한 텍스트 생성을 넘어, 모델이 **추론 과정(`<think>`)을 직접 출력**하는 Reasoning 모델을 경험해볼 수 있습니다.
+> 💡 **추론 과정이 궁금한 개발자에게 추천하는 프로젝트입니다.**  
+> DeepSeek R1의 단계적 사고(`<think>`) 과정을 **Open WebUI** 기반 ChatGPT 같은 웹 인터페이스로 직접 확인해볼 수 있습니다.
 
 ---
 
 ## 📌 모델 소개
 
-**DeepSeek-R1-Distill-Llama-8B**는 중국 AI 스타트업 DeepSeek이 2025년 1월 공개한  
-`DeepSeek-R1` 추론 모델의 지식을 Llama 8B 아키텍처에 **증류(Distillation)** 한 경량 모델입니다.
-
-DeepSeek-R1은 OpenAI의 o1 모델과 맞먹는 수학/코딩/논리 추론 능력을 보여주며  
-**오픈소스 AI의 패러다임을 바꾼 모델**로 평가받고 있습니다.  
-이 프로젝트는 그 능력을 RTX 40 시리즈 단일 GPU에서 실행할 수 있는 8B 경량 버전을 사용합니다.
+**DeepSeek-R1-Distill-Llama-8B**는 DeepSeek AI가 공개한 추론 특화 오픈소스 모델입니다.  
+Llama 3.1 8B 아키텍처를 기반으로 강화학습(GRPO)으로 추론 능력을 강화한 증류(Distill) 모델로,  
+답변 전 **`<think>` 태그로 단계적 추론 과정을 보여주는 것**이 특징입니다.
 
 | 항목 | 내용 |
 |------|------|
 | 개발사 | DeepSeek AI |
-| 베이스 모델 | Meta Llama 3.1 8B |
-| 학습 방식 | Knowledge Distillation from DeepSeek-R1 |
-| 라이선스 | MIT License |
-| Hugging Face | [deepseek-ai/DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) |
-
----
-
-## 🔍 Reasoning 모델이란?
-
-일반 LLM은 질문에 바로 답변을 생성합니다.  
-Reasoning 모델은 답변 전에 **`<think>` 태그 내부에서 단계별 추론 과정**을 먼저 수행합니다.
-
-```
-[입력] 1부터 10까지의 합은?
-
-[모델 출력]
-<think>
-1부터 10까지 더하면... 1+2=3, 3+3=6, 6+4=10, 10+5=15...
-등차수열 공식 n*(n+1)/2를 쓰면 10*11/2 = 55
-</think>
-
-1부터 10까지의 합은 **55**입니다.
-```
-
-이 방식으로 수학, 코딩, 논리 추론 문제에서 훨씬 높은 정확도를 보입니다.
+| 파라미터 수 | 8B (80억) |
+| 라이선스 | MIT License (무료, 상업적 이용 가능) |
+| Ollama | [ollama.com/library/deepseek-r1](https://ollama.com/library/deepseek-r1) |
 
 ---
 
@@ -53,13 +28,11 @@ Reasoning 모델은 답변 전에 **`<think>` 태그 내부에서 단계별 추�
 | GPU 아키텍처 | Ada Lovelace (RTX 40 시리즈) | Ada Lovelace (RTX 40 시리즈) |
 | CUDA | 12.1 이상 | 12.4 이상 |
 | RAM | 16GB | 32GB |
-| 저장공간 | 20GB (모델 다운로드 포함) | 30GB 이상 |
+| 저장공간 | 10GB 이상 | 20GB 이상 |
 | Python | 3.10 이상 | 3.11 |
 
-> ✅ 기본값 4-bit 양자화로 RTX 40 시리즈 전 라인업(RTX 4060 8GB~)에서 실행 가능합니다.  
-> VRAM 16GB 이상 환경에서는 `run.py`의 `USE_4BIT = False`로 변경 시 더 높은 품질로 실행할 수 있습니다.
-
-> ✅ MIT 라이선스로 **Hugging Face 계정 없이** 모델 다운로드가 가능합니다.
+> ✅ Ollama가 자동으로 최적 양자화 포맷(GGUF)을 선택하므로 RTX 40 시리즈 전 라인업(RTX 4060 8GB~)에서 실행 가능합니다.  
+> ✅ MIT 라이선스로 HuggingFace 계정 및 토큰이 **필요하지 않습니다.**
 
 ---
 
@@ -68,61 +41,27 @@ Reasoning 모델은 답변 전에 **`<think>` 태그 내부에서 단계별 추�
 ### 1. 저장소 클론
 
 ```bash
-git clone https://github.com/your-org/deepseek-r1-distill-8b-demo.git
+git clone https://github.com/gcube-extension-templates/deepseek-r1-distill-8b-demo.git
 cd deepseek-r1-distill-8b-demo
 ```
 
-### 2. 패키지 설치
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Setup 실행 (패키지 설치 + 모델 다운로드 한번에)
+### 2. Setup 실행 (Ollama + Open WebUI 설치 + 모델 다운로드)
 
 ```bash
 bash setup.sh
 ```
 
-> ✅ MIT 라이선스 모델로 Hugging Face 로그인 없이 바로 다운로드됩니다.
+> ⏳ Ollama, Open WebUI 설치 및 모델 다운로드가 자동으로 진행됩니다.
 
-### 4. 모델 실행
+### 3. 서비스 시작
 
 ```bash
-python run.py
+bash start.sh
 ```
 
-### 4. 실행 결과 예시
+### 4. 브라우저에서 접속
 
-```
-==============================================
-  🧠 DeepSeek-R1-Distill-Llama-8B — Demo
-==============================================
-🖥️  GPU: NVIDIA GeForce RTX 4090 (24.0GB VRAM)
-모델 로딩 중...
-✅ 모델 로딩 완료!
-
-[질문] 피보나치 수열의 10번째 수를 단계별로 구하세요.
-
---- 추론 과정 (Thinking) ---
-<think>
-피보나치 수열은 F(1)=1, F(2)=1로 시작하고
-F(n) = F(n-1) + F(n-2)로 정의됩니다.
-F(3) = 1+1 = 2
-F(4) = 2+1 = 3
-F(5) = 3+2 = 5
-...
-F(10) = 34+21 = 55
-</think>
-
---- 최종 답변 ---
-피보나치 수열의 10번째 수는 **55**입니다.
-
-단계별 계산:
-F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5,
-F(6)=8, F(7)=13, F(8)=21, F(9)=34, F(10)=55
-==============================================
-```
+GCUBE 워크로드의 **서비스 URL (포트 8080)** 으로 접속하면 채팅 인터페이스가 열립니다.
 
 ---
 
@@ -130,51 +69,26 @@ F(6)=8, F(7)=13, F(8)=21, F(9)=34, F(10)=55
 
 ```
 deepseek-r1-distill-8b-demo/
-├── README.md          # 프로젝트 설명 (현재 파일)
-├── requirements.txt   # 필요한 Python 패키지 목록
-├── setup.sh           # 패키지 설치 + 모델 다운로드 자동화 스크립트
-└── run.py             # 모델 실행 스크립트 (think 파싱 포함)
+├── README.md        # 프로젝트 설명 (현재 파일)
+├── setup.sh         # Ollama + Open WebUI 설치 + 모델 다운로드
+└── start.sh         # 서비스 시작 스크립트
 ```
-
----
-
-## 🛠️ 고급 설정
-
-`run.py` 상단의 설정 변수를 수정해 동작을 조절할 수 있습니다.
-
-```python
-# 추론에 사용할 질문 (수학, 코딩, 논리 문제에서 가장 효과적)
-USER_PROMPT = "피보나치 수열의 10번째 수를 단계별로 구하세요."
-
-# 생성 토큰 수 (추론 과정 포함이라 넉넉히 설정 권장)
-MAX_NEW_TOKENS = 2048
-
-# Temperature (0.5~0.7 권장, DeepSeek 공식 권고값)
-TEMPERATURE = 0.6
-
-# 4-bit 양자화 (VRAM 8GB 환경에서 True로 설정)
-USE_4BIT = False
-```
-
-> 📌 **DeepSeek 공식 권고:** Temperature는 0.5~0.7 범위를 사용하세요.  
-> System prompt는 사용하지 않는 것을 권장합니다.
 
 ---
 
 ## ❓ 자주 묻는 질문
 
-**Q. `<think>` 태그가 출력되지 않아요.**  
-A. 모델이 추론 과정을 생략한 경우입니다. 수학/코딩/논리 문제처럼 단계적 사고가 필요한 질문을 사용하면 추론 과정이 잘 나타납니다.
+**Q. 처음 실행 시 시간이 오래 걸려요.**  
+A. setup.sh 실행 중 Ollama, Open WebUI 설치 및 모델 다운로드가 진행됩니다. 인터넷 속도에 따라 수~수십 분이 소요될 수 있으며, 다음 실행부터는 `bash start.sh`만 실행하면 됩니다.
 
-**Q. 일반 Llama 3.1과 어떤 차이가 있나요?**  
-A. 이 모델은 DeepSeek-R1의 추론 능력을 증류받아 수학/논리 문제에서 훨씬 높은 정확도를 보입니다. 단, 일반 대화보다는 추론이 필요한 질문에 적합합니다.
+**Q. `<think>` 태그가 뭔가요?**  
+A. DeepSeek R1 모델이 최종 답변 전 단계적으로 추론하는 과정을 표시하는 태그입니다. Open WebUI에서는 접을 수 있는 형태로 보여줍니다.
 
-**Q. CUDA out of memory 오류가 발생해요.**  
-A. `run.py`의 `USE_4BIT = True`로 설정하면 VRAM 사용량을 약 절반으로 줄일 수 있습니다.
+**Q. 브라우저에서 접속이 안 돼요.**  
+A. GCUBE 워크로드 설정에서 포트 8080이 열려 있는지 확인해주세요.
 
 ---
 
 ## 📜 라이선스
 
-이 프로젝트의 코드는 MIT License를 따릅니다.  
-모델 가중치도 [MIT License](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B)를 따릅릅니다.
+이 프로젝트의 코드 및 모델 가중치 모두 MIT License를 따릅니다.
