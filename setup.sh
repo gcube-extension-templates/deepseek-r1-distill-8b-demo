@@ -15,7 +15,7 @@ echo "======================================"
 # ----------------------------------------------
 echo ""
 echo "[1/2] 패키지 설치 중..."
-pip install -r requirements.txt
+pip install -r requirements.txt --quiet
 echo "✅ 패키지 설치 완료"
 
 # ----------------------------------------------
@@ -28,8 +28,13 @@ echo "[2/2] 모델 다운로드 중... (약 16GB, 시간이 소요됩니다)"
 MODEL_DIR="/workspace/models/deepseek-r1-distill-llama-8b"
 mkdir -p "$MODEL_DIR"
 
-huggingface-cli download deepseek-ai/DeepSeek-R1-Distill-Llama-8B \
-    --local-dir "$MODEL_DIR"
+if ! huggingface-cli download deepseek-ai/DeepSeek-R1-Distill-Llama-8B \
+    --local-dir "$MODEL_DIR"; then
+    echo ""
+    echo "❌ 모델 다운로드에 실패했습니다."
+    echo "   네트워크 연결을 확인하고 다시 실행해주세요."
+    exit 1
+fi
 
 echo "✅ 모델 다운로드 완료: $MODEL_DIR"
 
